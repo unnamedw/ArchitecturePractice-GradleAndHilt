@@ -1,7 +1,8 @@
-package com.doachgosum.listsampleapp
+package com.doachgosum.listsampleapp.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.doachgosum.listsampleapp.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
