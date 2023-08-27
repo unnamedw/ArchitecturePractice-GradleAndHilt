@@ -9,7 +9,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -22,8 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val photoRepository: PhotoRepository,
-    @CoroutineQualifiers.DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
-    @CoroutineQualifiers.IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    @CoroutineQualifiers.DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
 ): ViewModel() {
 
     private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
@@ -34,9 +32,6 @@ class MainViewModel @Inject constructor(
 
     private val _photoList: MutableStateFlow<List<PhotoModel>> = MutableStateFlow(emptyList())
     val photoList = _photoList.asStateFlow()
-
-    private val _isReadButtonActive: MutableStateFlow<Boolean> = MutableStateFlow(true)
-    val isReadButtonActive = _isReadButtonActive.asStateFlow()
 
     private var fetchPhotoDataJob: Job? = null
     private var clearJob: Job? = null
