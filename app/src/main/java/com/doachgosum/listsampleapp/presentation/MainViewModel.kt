@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -21,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val photoRepository: PhotoRepository,
-    @CoroutineQualifiers.DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
+    @CoroutineQualifiers.DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
+    @CoroutineQualifiers.IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
 
     private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
@@ -33,7 +35,11 @@ class MainViewModel @Inject constructor(
     private val _photoList: MutableStateFlow<List<PhotoModel>> = MutableStateFlow(emptyList())
     val photoList = _photoList.asStateFlow()
 
+    private val _isReadButtonActive: MutableStateFlow<Boolean> = MutableStateFlow(true)
+    val isReadButtonActive = _isReadButtonActive.asStateFlow()
+
     private var fetchPhotoDataJob: Job? = null
+    private var clearJob: Job? = null
 
     private var page: Int = 0
 
@@ -52,6 +58,7 @@ class MainViewModel @Inject constructor(
                 }.onSuccess {
                     page++
                 }.onFailure {
+                    it.printStackTrace()
                     _commonEvent.emit(CommonEvent.ShowToast(msg = "정보를 불러오는 도중 문제가 발생했어요"))
                 }.also {
                     _isLoading.update { false }
@@ -62,8 +69,16 @@ class MainViewModel @Inject constructor(
     }
 
     fun clear() {
-        _photoList.update { emptyList() }
-        page = 0
+        clearJob = viewModelScope.launch {
+
+            // 기존 작업 취소
+            fetchPhotoDataJob?.cancelAndJoin()
+            _isLoading.update { false }
+
+            // 목록 리셋
+            _photoList.update { emptyList() }
+            page = 0
+        }
     }
 
     fun sortByTitleAsc() {

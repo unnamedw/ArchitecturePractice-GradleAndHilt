@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.doachgosum.listsampleapp.databinding.ActivityMainBinding
 import com.doachgosum.listsampleapp.domain.repository.PhotoRepository
 import com.doachgosum.listsampleapp.presentation.adapter.PhotoListAdapter
+import com.doachgosum.listsampleapp.presentation.util.setOnThrottleClickListener
 import com.doachgosum.listsampleapp.presentation.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -79,10 +80,17 @@ class MainActivity : AppCompatActivity() {
         binding.rvList.adapter = photoListAdapter
 
         // setup buttons
-        binding.btnRead.setOnClickListener {
+        binding.btnRead.setOnThrottleClickListener(500) {
             viewModel.loadMorePhotos()
         }
         binding.btnClear.setOnClickListener {
+
+            // 3초간 read 버튼 비활성화
+            binding.btnRead.isEnabled = false
+            binding.btnRead.postDelayed({
+                binding.btnRead.isEnabled = true
+            }, 3000)
+
             viewModel.clear()
         }
         binding.btnSort.setOnClickListener {

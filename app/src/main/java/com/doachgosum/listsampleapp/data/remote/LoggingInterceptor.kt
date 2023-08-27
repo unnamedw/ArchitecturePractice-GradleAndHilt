@@ -9,7 +9,7 @@ class LoggingInterceptor: Interceptor {
 
         val request = chain.request()
         Logger.n(
-            "[RESPONSE] URL: ${request.url().url()}" +
+            "[REQUEST] URL: ${request.url().url()}" +
                     "\nHEADERS: ${request.headers()}" +
                     "\nBODY: ${request.body().toString()}"
         )
