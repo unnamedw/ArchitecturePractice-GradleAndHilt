@@ -2,7 +2,7 @@ package com.doachgosum.listsampleapp.di
 
 import javax.inject.Qualifier
 
-class CoroutineQualifiers {
+class DispatcherQualifiers {
     @Retention(AnnotationRetention.RUNTIME)
     @Qualifier
     annotation class DefaultDispatcher

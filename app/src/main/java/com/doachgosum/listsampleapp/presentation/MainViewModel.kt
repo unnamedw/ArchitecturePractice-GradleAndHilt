@@ -2,7 +2,7 @@ package com.doachgosum.listsampleapp.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.doachgosum.listsampleapp.di.CoroutineQualifiers
+import com.doachgosum.listsampleapp.di.DispatcherQualifiers
 import com.doachgosum.listsampleapp.domain.model.PhotoModel
 import com.doachgosum.listsampleapp.domain.repository.PhotoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val photoRepository: PhotoRepository,
-    @CoroutineQualifiers.DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
+    @DispatcherQualifiers.DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
 ): ViewModel() {
 
     private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
