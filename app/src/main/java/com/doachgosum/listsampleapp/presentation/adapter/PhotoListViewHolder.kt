@@ -16,7 +16,9 @@ class PhotoListViewHolder(
 
         Glide.with(binding.root.context)
             .load(photo.thumbnailUrl)
-            .error(R.drawable.ic_launcher_foreground)
+            .centerCrop()
+            .placeholder(R.drawable.img_image_loading)
+            .error(R.drawable.img_image_error)
             .into(binding.ivThumbnail)
     }
 
