@@ -84,7 +84,6 @@ object AppDependencies {
     }
 }
 
-//util functions for adding the different type dependencies from build.gradle file
 fun DependencyHandler.implementation(list: List<String>) {
     list.forEach { dependency ->
         add("implementation", dependency)

@@ -6,23 +6,23 @@ plugins {
 }
 
 android {
-    namespace = Configurations.namespace
-    compileSdk = Configurations.compileSdk
+    namespace = AppConfigurations.namespace
+    compileSdk = AppConfigurations.compileSdk
 
     defaultConfig {
-        applicationId = Configurations.applicationId
-        minSdk = Configurations.minSdk
-        targetSdk = Configurations.targetSdk
-        versionCode = Configurations.versionCode
-        versionName = Configurations.versionName
+        applicationId = AppConfigurations.applicationId
+        minSdk = AppConfigurations.minSdk
+        targetSdk = AppConfigurations.targetSdk
+        versionCode = AppConfigurations.versionCode
+        versionName = AppConfigurations.versionName
 
-        testInstrumentationRunner = Configurations.androidTestInstrumentation
+        testInstrumentationRunner = AppConfigurations.androidTestInstrumentation
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile(Configurations.defaultProguardFiles), Configurations.proguardConsumerRules)
+            proguardFiles(getDefaultProguardFile(AppConfigurations.defaultProguardFiles), AppConfigurations.proguardConsumerRules)
         }
     }
     compileOptions {
@@ -42,10 +42,8 @@ dependencies {
     testImplementation(AppDependencies.testLibraries)
     androidTestImplementation(AppDependencies.androidTestLibraries)
     kapt(AppDependencies.kapts)
-//    ksp(AppDependencies.ksps)
 }
 
-// Allow references to generated code
 kapt {
     correctErrorTypes = true
 }

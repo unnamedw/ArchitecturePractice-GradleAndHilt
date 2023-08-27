@@ -1,5 +1,4 @@
-//app level config constants
-object Configurations {
+object AppConfigurations {
     const val namespace = "com.doachgosum.listsampleapp"
     const val applicationId = "com.doachgosum.listsampleapp"
     const val compileSdk = 33
