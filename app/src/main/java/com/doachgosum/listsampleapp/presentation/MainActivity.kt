@@ -1,13 +1,13 @@
 package com.doachgosum.listsampleapp.presentation
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.doachgosum.listsampleapp.Logger
 import com.doachgosum.listsampleapp.databinding.ActivityMainBinding
 import com.doachgosum.listsampleapp.domain.repository.PhotoRepository
 import com.doachgosum.listsampleapp.presentation.adapter.PhotoListAdapter
@@ -33,11 +33,17 @@ class MainActivity : AppCompatActivity() {
 
         subscribeViewModel()
         initView()
-
-        viewModel.fetchPhotoData()
     }
 
     private fun subscribeViewModel() {
+
+        lifecycleScope.launch {
+            viewModel.isLoading
+                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+                .collectLatest { isLoading ->
+                    binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+                }
+        }
 
         lifecycleScope.launch {
             viewModel.commonEvent
@@ -54,14 +60,34 @@ class MainActivity : AppCompatActivity() {
                 .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
                 .collectLatest {
                     photoListAdapter.submitList(it)
+
+                    if (it.isEmpty()) {
+                        binding.rvList.visibility = View.GONE
+                        binding.frameEmpty.visibility = View.VISIBLE
+                    } else {
+                        binding.rvList.visibility = View.VISIBLE
+                        binding.frameEmpty.visibility = View.GONE
+                    }
                 }
         }
     }
 
     private fun initView() {
+        // setup recyclerview
         binding.rvList.layoutManager = LinearLayoutManager(this)
             .apply { orientation = LinearLayoutManager.VERTICAL }
         binding.rvList.adapter = photoListAdapter
+
+        // setup buttons
+        binding.btnRead.setOnClickListener {
+            viewModel.loadMorePhotos()
+        }
+        binding.btnClear.setOnClickListener {
+            viewModel.clear()
+        }
+        binding.btnSort.setOnClickListener {
+            viewModel.sortByTitleAsc()
+        }
     }
 
 }

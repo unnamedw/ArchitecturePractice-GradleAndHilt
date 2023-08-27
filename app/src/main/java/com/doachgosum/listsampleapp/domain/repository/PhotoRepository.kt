@@ -4,5 +4,5 @@ import com.doachgosum.listsampleapp.domain.model.PhotoModel
 
 interface PhotoRepository {
 
-    suspend fun getPhotos(): List<PhotoModel>
+    suspend fun getPhotos(page: Int): List<PhotoModel>
 }
