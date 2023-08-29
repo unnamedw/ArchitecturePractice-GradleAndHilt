@@ -29,9 +29,7 @@ fun List<PhotoApiModel>.mapToPhotoModelList(): List<PhotoModel> {
     return map {
         PhotoModel(
             id = it.id,
-            albumId = it.albumId,
             title = it.title,
-            url = it.url,
             thumbnailUrl = it.thumbnailUrl
         )
     }
