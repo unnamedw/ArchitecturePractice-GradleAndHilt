@@ -25,6 +25,7 @@ object Versions {
     val junit = "4.13.2"
     val extJunit = "1.1.5"
     val espresso = "3.5.1"
+    val coroutines = "1.7.3"
 }
 
 object AppDependencies {
@@ -49,6 +50,7 @@ object AppDependencies {
 
     //test libs
     private val junit = "junit:junit:${Versions.junit}"
+    private val kotlinxCoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
 
     //kapt
     private val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
@@ -76,6 +78,7 @@ object AppDependencies {
 
     val testLibraries = arrayListOf<String>().apply {
         add(junit)
+        add(kotlinxCoroutinesTest)
     }
 
     val kapts = arrayListOf<String>().apply {
